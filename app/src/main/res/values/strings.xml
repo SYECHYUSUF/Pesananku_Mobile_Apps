@@ -1,3 +1,51 @@
 <resources>
-    <string name="app_name">Reservationer</string>
+    <string name="app_name">CafeOrderApp</string>
+    <string name="welcome_message">Halo, Coffee Lovers!</string>
+    <string name="scan_instruction">Silakan scan QR pada meja Anda</string>
+    <string name="click_to_scan">Klik untuk Scan QR</string>
+    <string name="table_not_detected">Meja belum terdeteksi</string>
+    <string name="order_now">Pesan Sekarang</string>
+    <string name="table_number_format">Nomor Meja: %1$s</string>
+    <string name="scan_prompt">Scan QR Code Meja</string>
+    <string name="scan_cancelled">Scan dibatalkan</string>
+
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Login to your account</string>
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Join our cafe community</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="register_prompt">Don\'t have an account? Register</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="signup_button">Sign Up</string>
+    <string name="login_prompt">Already have an account? Login</string>
+
+    <string name="select_menu">Pilih Menu</string>
+    <string name="detail_order_title">Detail Pesanan</string>
+    <string name="menu_format">Menu: %1$s</string>
+    <string name="select_size">Pilih Ukuran:</string>
+    <string name="size_regular">Reguler</string>
+    <string name="size_large">Large</string>
+    <string name="extra_topping">Ekstra Topping</string>
+    <string name="add_to_cart">Masuk Keranjang</string>
+
+    <string name="checkout_title">Checkout</string>
+    <string name="customer_name_hint">Nama Pemesan</string>
+    <string name="payment_method_label">Metode Pembayaran:</string>
+    <string name="pay_button">Bayar</string>
+    <string name="name_empty_error">Masukkan nama pemesan</string>
+
+    <string name="receipt_title">Struk Pembayaran</string>
+    <string name="loading_receipt">Memuat struk...</string>
+    <string name="back_to_main">Kembali ke Beranda</string>
+    <string name="receipt_template">Ringkasan Pesanan\n------------------\nMeja: %1$s\nNama: %2$s\nMenu: %3$s (%4$s)\nEkstra Topping: %5$s\nPembayaran: %6$s\nStatus: LUNAS</string>
+
+    <string name="hero_title">Spesial Hari Ini!</string>
+    <string name="hero_promo">Diskon 20%\nSemua Kopi</string>
+    <string name="menu_choice">Pilihan Menu</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_history">Riwayat</string>
+    <string name="table_detected">Meja Terdeteksi: %1$s</string>
+    <string name="history_coming_soon">Halaman Riwayat akan segera hadir!</string>
 </resources>

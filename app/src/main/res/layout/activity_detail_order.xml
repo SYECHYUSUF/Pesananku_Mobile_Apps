@@ -1,67 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/background_light">
 
-    <TextView
-        android:id="@+id/tv_detail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detail Pesanan"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/ll_buttons"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tv_selected_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_detail_title"
-        android:layout_marginTop="16dp"
-        android:text="Menu: -"
-        android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tv_label_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_selected_menu"
-        android:layout_marginTop="24dp"
-        android:text="Pilih Ukuran:" />
+            <ImageView
+                android:id="@+id/iv_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
 
-    <RadioGroup
-        android:id="@+id/rg_size"
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Menu Name"
+                android:textColor="@color/primary_green"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 0"
+                android:textColor="@color/secondary_green"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#DDDDDD" />
+
+            <!-- Sugar Level -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Sugar Level"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_sugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_normal_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Normal" />
+
+                <RadioButton
+                    android:id="@+id/rb_less_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Less Sugar" />
+
+                <RadioButton
+                    android:id="@+id/rb_no_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Sugar" />
+            </RadioGroup>
+
+            <!-- Add-ons -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Add-ons"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cb_cream"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Extra Cream (+Rp 5.000)" />
+
+            <CheckBox
+                android:id="@+id/cb_topping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Extra Topping (+Rp 3.000)" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_label_size">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <RadioButton
-            android:id="@+id/rb_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reguler"
-            android:checked="true" />
+        <Button
+            android:id="@+id/btn_add_more"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Tambah Menu"
+            android:textColor="@color/primary_green" />
 
-        <RadioButton
-            android:id="@+id/rb_large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Large" />
-    </RadioGroup>
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1.5"
+            android:backgroundTint="@color/primary_green"
+            android:text="Konfirmasi"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/cb_extra_topping"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rg_size"
-        android:layout_marginTop="16dp"
-        android:text="Ekstra Topping" />
-
-    <Button
-        android:id="@+id/btn_add_to_cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Masuk Keranjang" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,19 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="CafeOrderApp"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        android:theme="@style/Theme.Reservationer">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +24,17 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".MenuListActivity" />
         <activity android:name=".DetailOrderActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".ReceiptActivity" />
+        <activity
+            android:name=".CaptureActivityPortrait"
+            android:screenOrientation="portrait"
+            tools:replace="android:screenOrientation" />
 
     </application>
 

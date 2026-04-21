@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,23 +24,48 @@ public class DetailOrderActivity extends AppCompatActivity {
         selectedMenu = getIntent().getStringExtra("SELECTED_MENU");
         tableNo = getIntent().getStringExtra("TABLE_NUMBER");
 
-        TextView tvSelectedMenu = findViewById(R.id.tv_selected_menu);
-        tvSelectedMenu.setText("Menu: " + selectedMenu);
+        ImageView ivImage = findViewById(R.id.iv_detail_image);
+        TextView tvName = findViewById(R.id.tv_detail_name);
+        TextView tvPrice = findViewById(R.id.tv_detail_price);
 
-        RadioGroup rgSize = findViewById(R.id.rg_size);
-        CheckBox cbExtraTopping = findViewById(R.id.cb_extra_topping);
-        Button btnAddToCart = findViewById(R.id.btn_add_to_cart);
+        tvName.setText(selectedMenu);
+        
+        // Set gambar & harga berdasarkan menu
+        if (selectedMenu.equals("Kopi Susu")) {
+            ivImage.setImageResource(R.drawable.kopsu);
+            tvPrice.setText("Rp 15.000");
+        } else if (selectedMenu.equals("Nasi Goreng")) {
+            ivImage.setImageResource(R.drawable.nasgor);
+            tvPrice.setText("Rp 25.000");
+        } else {
+            ivImage.setImageResource(R.drawable.kentang);
+            tvPrice.setText("Rp 12.000");
+        }
 
-        btnAddToCart.setOnClickListener(v -> {
-            int selectedId = rgSize.getCheckedRadioButtonId();
-            RadioButton rbSelected = findViewById(selectedId);
-            String size = rbSelected.getText().toString();
-            String topping = cbExtraTopping.isChecked() ? "Ya" : "Tidak";
+        RadioGroup rgSugar = findViewById(R.id.rg_sugar);
+        CheckBox cbCream = findViewById(R.id.cb_cream);
+        CheckBox cbTopping = findViewById(R.id.cb_topping);
+        Button btnAddMore = findViewById(R.id.btn_add_more);
+        Button btnConfirm = findViewById(R.id.btn_confirm);
+
+        btnAddMore.setOnClickListener(v -> {
+            Toast.makeText(this, "Pesanan ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
+            finish(); // Kembali ke home untuk tambah menu
+        });
+
+        btnConfirm.setOnClickListener(v -> {
+            int sugarId = rgSugar.getCheckedRadioButtonId();
+            RadioButton rbSugar = findViewById(sugarId);
+            String sugar = rbSugar.getText().toString();
+            
+            StringBuilder addons = new StringBuilder();
+            if (cbCream.isChecked()) addons.append("Extra Cream, ");
+            if (cbTopping.isChecked()) addons.append("Extra Topping");
 
             Intent intent = new Intent(DetailOrderActivity.this, CheckoutActivity.class);
             intent.putExtra("MENU", selectedMenu);
-            intent.putExtra("SIZE", size);
-            intent.putExtra("TOPPING", topping);
+            intent.putExtra("SUGAR", sugar);
+            intent.putExtra("ADDONS", addons.toString());
             intent.putExtra("TABLE_NUMBER", tableNo);
             startActivity(intent);
         });

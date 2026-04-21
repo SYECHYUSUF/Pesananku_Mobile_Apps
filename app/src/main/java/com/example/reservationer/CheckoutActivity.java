@@ -1,22 +1,21 @@
 package com.example.reservationer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileOutputStream;
-
 public class CheckoutActivity extends AppCompatActivity {
 
-    private String menu, size, topping, tableNo;
-    private String[] paymentMethods = {"Cash", "QRIS"};
+    private String menu, sugar, addons, tableNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,50 +23,41 @@ public class CheckoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkout);
 
         menu = getIntent().getStringExtra("MENU");
-        size = getIntent().getStringExtra("SIZE");
-        topping = getIntent().getStringExtra("TOPPING");
+        sugar = getIntent().getStringExtra("SUGAR");
+        addons = getIntent().getStringExtra("ADDONS");
         tableNo = getIntent().getStringExtra("TABLE_NUMBER");
 
-        EditText etName = findViewById(R.id.et_name);
-        Spinner spPayment = findViewById(R.id.sp_payment);
-        Button btnPay = findViewById(R.id.btn_pay);
+        TextView tvMenu = findViewById(R.id.tv_summary_menu);
+        TextView tvDetails = findViewById(R.id.tv_summary_details);
+        TextView tvTable = findViewById(R.id.tv_summary_table);
+        RadioGroup rgPayment = findViewById(R.id.rg_payment_method);
+        Button btnPay = findViewById(R.id.btn_pay_now);
+        FrameLayout flLoading = findViewById(R.id.fl_loading);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paymentMethods);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spPayment.setAdapter(adapter);
+        tvMenu.setText("Menu: " + menu);
+        tvDetails.setText("Sugar: " + sugar + (addons.isEmpty() ? "" : " | Add-ons: " + addons));
+        tvTable.setText("Meja: " + tableNo);
 
         btnPay.setOnClickListener(v -> {
-            String name = etName.getText().toString();
-            String payment = spPayment.getSelectedItem().toString();
+            int selectedId = rgPayment.getCheckedRadioButtonId();
+            RadioButton rbPayment = findViewById(selectedId);
+            String paymentMethod = rbPayment.getText().toString();
 
-            if (name.isEmpty()) {
-                Toast.makeText(this, "Masukkan nama pemesan", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            // Tampilkan loading overlay
+            flLoading.setVisibility(View.VISIBLE);
 
-            String receiptData = "Ringkasan Pesanan\n" +
-                    "------------------\n" +
-                    "Meja: " + tableNo + "\n" +
-                    "Nama: " + name + "\n" +
-                    "Menu: " + menu + " (" + size + ")\n" +
-                    "Ekstra Topping: " + topping + "\n" +
-                    "Pembayaran: " + payment + "\n" +
-                    "Status: LUNAS";
-
-            saveToFile(receiptData);
+            // Simulasi proses pembayaran (3 detik)
+            new Handler().postDelayed(() -> {
+                flLoading.setVisibility(View.GONE);
+                Toast.makeText(this, "Pembayaran Berhasil via " + paymentMethod, Toast.LENGTH_LONG).show();
+                
+                Intent intent = new Intent(CheckoutActivity.this, ReceiptActivity.class);
+                intent.putExtra("MENU", menu);
+                intent.putExtra("TABLE", tableNo);
+                intent.putExtra("PAYMENT", paymentMethod);
+                startActivity(intent);
+                finish();
+            }, 3000);
         });
-    }
-
-    private void saveToFile(String data) {
-        String filename = "receipt.txt";
-        try (FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE)) {
-            fos.write(data.getBytes());
-            Intent intent = new Intent(CheckoutActivity.this, ReceiptActivity.class);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show();
-        }
     }
 }

@@ -2,8 +2,30 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Reservationer" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorSecondary">@color/secondary_green</item>
+        <item name="colorTertiary">@color/accent_green</item>
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:statusBarColor">@color/primary_green</item>
     </style>
 
     <style name="Theme.Reservationer" parent="Base.Theme.Reservationer" />
+
+    <style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="Button.Modern" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.MediumComponent</item>
+    </style>
+
+    <style name="EditText.Modern" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary_green</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+    </style>
 </resources>

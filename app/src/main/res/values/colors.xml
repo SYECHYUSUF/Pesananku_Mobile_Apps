@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Nature Modern Green Palette -->
+    <color name="primary_green">#2D5A27</color> <!-- Dark Forest Green -->
+    <color name="secondary_green">#4F7942</color> <!-- Fern Green -->
+    <color name="accent_green">#8FB996</color> <!-- Sage Green -->
+    <color name="light_green">#E9F5E9</color> <!-- Very Light Mint -->
+    <color name="text_dark">#1A2F1A</color>
+    <color name="background_light">#FAFFFA</color>
 </resources>

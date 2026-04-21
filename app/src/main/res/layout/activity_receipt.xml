@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="24dp">
 
     <TextView
         android:id="@+id/tv_receipt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Struk Pembayaran"
-        android:textSize="20sp"
+        android:text="@string/receipt_title"
+        android:textColor="@color/primary_green"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/tv_receipt_content"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_receipt_title"
         android:layout_marginTop="32dp"
-        android:fontFamily="monospace"
-        android:text="Memuat struk..."
-        android:textSize="14sp" />
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/light_green"
+        app:strokeWidth="1dp">
+
+        <TextView
+            android:id="@+id/tv_receipt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:fontFamily="monospace"
+            android:text="@string/loading_receipt"
+            android:textColor="@color/text_dark"
+            android:textSize="14sp" />
+    </com.google.android.material.card.MaterialCardView>
 
     <Button
         android:id="@+id/btn_back_to_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:text="Kembali ke Beranda" />
+        android:backgroundTint="@color/primary_green"
+        android:text="@string/back_to_main"
+        android:textColor="@color/white"
+        app:cornerRadius="12dp" />
 
 </RelativeLayout>

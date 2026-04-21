@@ -2,21 +2,31 @@ package com.example.reservationer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvTableNumber;
-    private Button btnNext;
     private String tableNo = "";
+    private RecyclerView rvMenuHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,21 +34,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tvTableNumber = findViewById(R.id.tv_table_number);
-        btnNext = findViewById(R.id.btn_next);
-        Button btnScan = findViewById(R.id.btn_scan);
+        rvMenuHome = findViewById(R.id.rv_menu_home);
+        FloatingActionButton btnScan = findViewById(R.id.btn_scan);
+
+        // Setup Menu List di Home
+        setupMenu();
 
         btnScan.setOnClickListener(v -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.setPrompt("Scan QR Code Meja");
+            integrator.setPrompt(getString(R.string.scan_prompt));
             integrator.setOrientationLocked(true);
+            integrator.setBeepEnabled(true);
+            integrator.setCaptureActivity(CaptureActivityPortrait.class);
             integrator.initiateScan();
         });
 
-        btnNext.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MenuListActivity.class);
-            intent.putExtra("TABLE_NUMBER", tableNo);
-            startActivity(intent);
+        findViewById(R.id.nav_history).setOnClickListener(v -> {
+            Toast.makeText(this, getString(R.string.history_coming_soon), Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void setupMenu() {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("Kopi Susu", "Kopi robusta dengan susu kental manis", "Rp 15.000", R.drawable.kopsu));
+        menuItems.add(new MenuItem("Nasi Goreng", "Nasi goreng spesial dengan telur", "Rp 25.000", R.drawable.nasgor));
+        menuItems.add(new MenuItem("Kentang Goreng", "Camilan gurih dan renyah", "Rp 12.000", R.drawable.kentang));
+
+        rvMenuHome.setLayoutManager(new LinearLayoutManager(this));
+        rvMenuHome.setAdapter(new MenuAdapter(menuItems));
     }
 
     @Override
@@ -46,14 +69,80 @@ public class MainActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Scan dibatalkan", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.scan_cancelled, Toast.LENGTH_LONG).show();
             } else {
                 tableNo = result.getContents();
-                tvTableNumber.setText("Nomor Meja: " + tableNo);
-                btnNext.setEnabled(true);
+                tvTableNumber.setText(getString(R.string.table_number_format, tableNo));
+                Toast.makeText(this, getString(R.string.table_detected, tableNo), Toast.LENGTH_SHORT).show();
+                
+                // Setelah scan, lanjut pilih menu (karena flow user: scan -> pilih menu -> bayar)
+                Toast.makeText(this, "Silakan pilih menu pesanan Anda", Toast.LENGTH_SHORT).show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    // Model Menu dengan Gambar
+    static class MenuItem {
+        String name, desc, price;
+        int imageResId;
+        MenuItem(String name, String desc, String price, int imageResId) {
+            this.name = name;
+            this.desc = desc;
+            this.price = price;
+            this.imageResId = imageResId;
+        }
+    }
+
+    // Adapter dengan Layout Custom
+    class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
+        List<MenuItem> items;
+        MenuAdapter(List<MenuItem> items) { this.items = items; }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_home, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            MenuItem item = items.get(position);
+            holder.tvName.setText(item.name);
+            holder.tvDesc.setText(item.desc);
+            holder.tvPrice.setText(item.price);
+            holder.ivImage.setImageResource(item.imageResId);
+
+            holder.itemView.setOnClickListener(v -> {
+                // Flow user: pilih menu -> arahkan ke pilih meja (jika belum scan)
+                if (tableNo.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Silakan scan barcode meja terlebih dahulu!", Toast.LENGTH_SHORT).show();
+                    // Opsional: langsung buka scanner
+                    findViewById(R.id.btn_scan).performClick();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, DetailOrderActivity.class);
+                    intent.putExtra("SELECTED_MENU", item.name);
+                    intent.putExtra("TABLE_NUMBER", tableNo);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() { return items.size(); }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvName, tvDesc, tvPrice;
+            ImageView ivImage;
+            ViewHolder(View v) {
+                super(v);
+                tvName = v.findViewById(R.id.tv_menu_name);
+                tvDesc = v.findViewById(R.id.tv_menu_desc);
+                tvPrice = v.findViewById(R.id.tv_menu_price);
+                ivImage = v.findViewById(R.id.iv_menu_image);
+            }
         }
     }
 }

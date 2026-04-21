@@ -1,54 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".MainActivity">
+    android:background="@color/background_light">
 
+    <!-- Header / Hero Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/hero_section"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/backgroud" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_title"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_promo"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Menu Label -->
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_menu_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CafeOrderApp"
-        android:textSize="24sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/menu_choice"
+        android:textColor="@color/primary_green"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_top_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/hero_section" />
 
-    <Button
+    <!-- Content Area (Menu List) -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_container"
+        app:layout_constraintTop_toBottomOf="@id/tv_menu_label">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_table_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/table_not_detected"
+                android:textAlignment="center"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp" />
+
+            <!-- Placeholder for Food Menu items -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_menu_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- "Pesan Sekarang" button removed as per request, logic moved to item click or scan flow -->
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:elevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!-- Home Tab -->
+            <LinearLayout
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_today"
+                    app:tint="@color/primary_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_home"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_green" />
+            </LinearLayout>
+
+            <!-- Middle space for FAB -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <!-- History Tab -->
+            <LinearLayout
+                android:id="@+id/nav_history"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_recent_history"
+                    app:tint="#888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_history"
+                    android:textSize="12sp"
+                    android:textColor="#888888" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Floating Scan Button - Placed outside to be on top -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Scan QR Meja"
+        android:layout_marginBottom="40dp"
+        android:src="@android:drawable/ic_menu_camera"
+        app:backgroundTint="@color/accent_green"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_top_toBottomOf="@id/tv_title" />
-
-    <TextView
-        android:id="@+id/tv_table_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Nomor Meja: -"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_top_toBottomOf="@id/btn_scan" />
-
-    <Button
-        android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Lanjut Pesan"
-        android:enabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_top_toBottomOf="@id/tv_table_number" />
+        app:tint="@color/white"
+        app:elevation="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
