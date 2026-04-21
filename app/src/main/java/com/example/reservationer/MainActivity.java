@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateCartUI();
-        if (!tableNo.isEmpty()) {
+        if (tableNo != null && !tableNo.isEmpty()) {
             cvTableMap.setVisibility(View.VISIBLE);
+        } else {
+            cvTableMap.setVisibility(View.GONE);
         }
     }
 
