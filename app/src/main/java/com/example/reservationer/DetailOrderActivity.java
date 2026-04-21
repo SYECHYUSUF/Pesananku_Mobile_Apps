@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.journeyapps.barcodescanner.CaptureActivity;
-
 public class DetailOrderActivity extends AppCompatActivity {
 
     private String selectedMenu, tableNo;
@@ -55,19 +52,12 @@ public class DetailOrderActivity extends AppCompatActivity {
         Button btnConfirm = findViewById(R.id.btn_confirm);
 
         btnAddMore.setOnClickListener(v -> {
+            MainActivity.addToCart();
             Toast.makeText(this, "Pesanan ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
             finish();
         });
 
         btnConfirm.setOnClickListener(v -> {
-            if (tableNo == null || tableNo.isEmpty()) {
-                Toast.makeText(this, "Silakan scan barcode meja Anda terlebih dahulu!", Toast.LENGTH_LONG).show();
-                // Jika meja belum di-scan, kita bisa arahkan balik ke Home atau paksa scan di sini
-                // Namun sesuai permintaan, tombol scan ada di bottom bar Home. 
-                // Kita bisa finish() agar user balik ke Home untuk scan.
-                return;
-            }
-
             int sizeId = rgSize.getCheckedRadioButtonId();
             RadioButton rbSize = findViewById(sizeId);
             String size = rbSize.getText().toString();
@@ -83,13 +73,13 @@ public class DetailOrderActivity extends AppCompatActivity {
 
             String note = etNote.getText().toString();
 
-            Intent intent = new Intent(DetailOrderActivity.this, CheckoutActivity.class);
+            // Sesuai permintaan: Langsung ke halaman pilih meja setelah konfirmasi
+            Intent intent = new Intent(DetailOrderActivity.this, SelectTableActivity.class);
             intent.putExtra("MENU", selectedMenu);
             intent.putExtra("SIZE", size);
             intent.putExtra("SUGAR", sugar);
             intent.putExtra("ADDONS", addons.toString());
             intent.putExtra("NOTE", note);
-            intent.putExtra("TABLE_NUMBER", tableNo);
             startActivity(intent);
         });
     }

@@ -29,6 +29,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".MenuListActivity" />
         <activity android:name=".DetailOrderActivity" />
+        <activity android:name=".SelectTableActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".ReceiptActivity" />
         <activity
