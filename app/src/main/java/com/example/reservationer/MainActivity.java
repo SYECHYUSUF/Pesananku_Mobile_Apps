@@ -57,7 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_cart).setOnClickListener(v -> {
             if (cartItemCount > 0) {
-                Toast.makeText(this, "Membuka Keranjang...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, CheckoutActivity.class);
+                // Sebagai contoh kita kirim data default jika keranjang ditekan dari Main
+                // Di aplikasi nyata, ini biasanya membuka list keranjang
+                intent.putExtra("MENU", "Pesan dari Keranjang");
+                intent.putExtra("SUGAR", "-");
+                intent.putExtra("ADDONS", "");
+                intent.putExtra("TABLE_NUMBER", tableNo.isEmpty() ? "Belum Scan" : tableNo);
+                startActivity(intent);
             } else {
                 Toast.makeText(this, "Keranjang Anda kosong", Toast.LENGTH_SHORT).show();
             }
