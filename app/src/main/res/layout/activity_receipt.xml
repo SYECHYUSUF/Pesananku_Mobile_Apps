@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_receipt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Struk Pembayaran"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_receipt_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_receipt_title"
+        android:layout_marginTop="32dp"
+        android:fontFamily="monospace"
+        android:text="Memuat struk..."
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_back_to_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Kembali ke Beranda" />
+
+</RelativeLayout>
