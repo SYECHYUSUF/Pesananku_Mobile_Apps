@@ -2,6 +2,8 @@ package com.example.reservationer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -30,7 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvMenuHome;
     private TextView tvCartCount;
     private CardView cvTableMap;
+    private ViewPager2 vpBanner;
     private static int cartItemCount = 0;
+    private static String lastAddedMenu = "";
+
+    private Handler bannerHandler = new Handler(Looper.getMainLooper());
+    private Runnable bannerRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
         rvMenuHome = findViewById(R.id.rv_menu_home);
         tvCartCount = findViewById(R.id.tv_cart_count);
         cvTableMap = findViewById(R.id.cv_table_map);
+        vpBanner = findViewById(R.id.vp_banner);
         FloatingActionButton btnScan = findViewById(R.id.btn_scan);
 
         updateCartUI();
         setupMenu();
+        setupBanner();
 
         btnScan.setOnClickListener(v -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
@@ -58,10 +68,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_cart).setOnClickListener(v -> {
             if (cartItemCount > 0) {
                 Intent intent = new Intent(MainActivity.this, CheckoutActivity.class);
-                // Sebagai contoh kita kirim data default jika keranjang ditekan dari Main
-                // Di aplikasi nyata, ini biasanya membuka list keranjang
-                intent.putExtra("MENU", "Pesan dari Keranjang");
-                intent.putExtra("SUGAR", "-");
+                intent.putExtra("MENU", lastAddedMenu.isEmpty() ? "Pesan dari Keranjang" : lastAddedMenu);
+                intent.putExtra("SUGAR", "Normal");
                 intent.putExtra("ADDONS", "");
                 intent.putExtra("TABLE_NUMBER", tableNo.isEmpty() ? "Belum Scan" : tableNo);
                 startActivity(intent);
@@ -77,10 +85,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.nav_history).setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, HistoryActivity.class));
         });
+    }
 
-        findViewById(R.id.nav_home).setOnClickListener(v -> {
-            // Already at home
-        });
+    private void setupBanner() {
+        int[] banners = {R.drawable.banner1, R.drawable.banner2};
+        BannerAdapter adapter = new BannerAdapter(banners);
+        vpBanner.setAdapter(adapter);
+
+        bannerRunnable = () -> {
+            int currentItem = vpBanner.getCurrentItem();
+            int nextItem = (currentItem + 1) % banners.length;
+            vpBanner.setCurrentItem(nextItem, true);
+            bannerHandler.postDelayed(bannerRunnable, 3000);
+        };
     }
 
     @Override
@@ -92,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             cvTableMap.setVisibility(View.GONE);
         }
+        bannerHandler.postDelayed(bannerRunnable, 3000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bannerHandler.removeCallbacks(bannerRunnable);
     }
 
     private void updateCartUI() {
@@ -105,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static void addToCart() {
         cartItemCount++;
+    }
+
+    public static void addToCart(String menuName) {
+        cartItemCount++;
+        lastAddedMenu = menuName;
     }
 
     private void setupMenu() {
@@ -131,6 +160,24 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    static class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder> {
+        int[] images;
+        BannerAdapter(int[] images) { this.images = images; }
+        @NonNull @Override public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ImageView imageView = new ImageView(parent.getContext());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            return new ViewHolder(imageView);
+        }
+        @Override public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ((ImageView) holder.itemView).setImageResource(images[position]);
+        }
+        @Override public int getItemCount() { return images.length; }
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            ViewHolder(View v) { super(v); }
         }
     }
 

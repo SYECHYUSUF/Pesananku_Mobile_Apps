@@ -2,7 +2,6 @@ package com.example.reservationer;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,7 @@ public class CaptureActivityPortrait extends CaptureActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_scanner_layout);
 
-        barcodeScannerView = findViewById(R.id.zxing_barcode_surface);
+        barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
 
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
