@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTableNumber;
     private String tableNo = "";
     private RecyclerView rvMenuHome;
+    private TextView tvCartCount;
+    private static int cartItemCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         tvTableNumber = findViewById(R.id.tv_table_number);
         rvMenuHome = findViewById(R.id.rv_menu_home);
+        tvCartCount = findViewById(R.id.tv_cart_count);
         FloatingActionButton btnScan = findViewById(R.id.btn_scan);
+
+        updateCartUI();
 
         // Setup Menu List di Home
         setupMenu();
@@ -49,13 +54,41 @@ public class MainActivity extends AppCompatActivity {
             integrator.initiateScan();
         });
 
+        findViewById(R.id.btn_cart).setOnClickListener(v -> {
+            if (cartItemCount > 0) {
+                // Dummy: Langsung ke checkout seolah-olah isi keranjang
+                Toast.makeText(this, "Membuka Keranjang...", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Keranjang Anda kosong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.btn_notification).setOnClickListener(v -> {
+            Toast.makeText(this, "Tidak ada notifikasi baru", Toast.LENGTH_SHORT).show();
+        });
+
         findViewById(R.id.nav_history).setOnClickListener(v -> {
             Toast.makeText(this, getString(R.string.history_coming_soon), Toast.LENGTH_SHORT).show();
         });
+    }
 
-        findViewById(R.id.nav_home).setOnClickListener(v -> {
-            // Sudah di home
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartUI();
+    }
+
+    private void updateCartUI() {
+        if (cartItemCount > 0) {
+            tvCartCount.setVisibility(View.VISIBLE);
+            tvCartCount.setText(String.valueOf(cartItemCount));
+        } else {
+            tvCartCount.setVisibility(View.GONE);
+        }
+    }
+
+    public static void addToCart() {
+        cartItemCount++;
     }
 
     private void setupMenu() {
@@ -115,10 +148,9 @@ public class MainActivity extends AppCompatActivity {
             holder.ivImage.setImageResource(item.imageResId);
 
             holder.itemView.setOnClickListener(v -> {
-                // Langsung ke detail menu tanpa paksa scan
                 Intent intent = new Intent(MainActivity.this, DetailOrderActivity.class);
                 intent.putExtra("SELECTED_MENU", item.name);
-                intent.putExtra("TABLE_NUMBER", tableNo); // Kirim tableNo (mungkin masih kosong)
+                intent.putExtra("TABLE_NUMBER", tableNo);
                 startActivity(intent);
             });
         }
