@@ -6,16 +6,27 @@
     android:background="@color/background_light"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/btn_back_history"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@android:drawable/ic_menu_revert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary_green" />
+
     <TextView
         android:id="@+id/tv_history_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Riwayat Pesanan"
         android:textColor="@color/primary_green"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/btn_back_history"
+        app:layout_constraintStart_toEndOf="@id/btn_back_history"
+        app:layout_constraintTop_toTopOf="@id/btn_back_history" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_history"

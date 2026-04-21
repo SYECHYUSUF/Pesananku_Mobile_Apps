@@ -32,6 +32,7 @@
         <activity android:name=".SelectTableActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".ReceiptActivity" />
+        <activity android:name=".HistoryActivity" />
         <activity
             android:name=".CaptureActivityPortrait"
             android:screenOrientation="portrait"

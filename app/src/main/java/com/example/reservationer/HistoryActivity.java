@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         rvHistory = findViewById(R.id.rv_history);
         tvEmpty = findViewById(R.id.tv_empty_history);
+        ImageView btnBack = findViewById(R.id.btn_back_history);
+
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
         if (historyList.isEmpty()) {
             tvEmpty.setVisibility(View.VISIBLE);

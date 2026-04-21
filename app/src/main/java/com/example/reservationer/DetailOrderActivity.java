@@ -32,6 +32,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         ImageView ivImage = findViewById(R.id.iv_detail_image);
         TextView tvName = findViewById(R.id.tv_detail_name);
         TextView tvPrice = findViewById(R.id.tv_detail_price);
+        ImageView btnBack = findViewById(R.id.btn_back_detail);
 
         RadioButton rbSmall = findViewById(R.id.rb_small);
         RadioButton rbMedium = findViewById(R.id.rb_medium);
@@ -71,6 +72,10 @@ public class DetailOrderActivity extends AppCompatActivity {
         Button btnAddMore = findViewById(R.id.btn_add_more);
         Button btnConfirm = findViewById(R.id.btn_confirm);
 
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
+
         btnAddMore.setOnClickListener(v -> {
             MainActivity.addToCart();
             Toast.makeText(this, "Pesanan ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
@@ -109,7 +114,6 @@ public class DetailOrderActivity extends AppCompatActivity {
 
     private void setSmallIcon(RadioButton rb, int resId) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
-        // Resize bitmap to a smaller size, e.g., 60x60 or 80x80 pixels
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
         Drawable drawable = new BitmapDrawable(getResources(), resized);
         rb.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
