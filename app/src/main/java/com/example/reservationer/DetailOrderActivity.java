@@ -1,6 +1,9 @@
 package com.example.reservationer;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -10,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,17 +33,33 @@ public class DetailOrderActivity extends AppCompatActivity {
         TextView tvName = findViewById(R.id.tv_detail_name);
         TextView tvPrice = findViewById(R.id.tv_detail_price);
 
+        RadioButton rbSmall = findViewById(R.id.rb_small);
+        RadioButton rbMedium = findViewById(R.id.rb_medium);
+        RadioButton rbLarge = findViewById(R.id.rb_large);
+
         tvName.setText(selectedMenu);
         
         if (selectedMenu.equals("Kopi Susu")) {
             ivImage.setImageResource(R.drawable.kopsu);
             tvPrice.setText("Rp 15.000");
+            
+            setSmallIcon(rbSmall, R.drawable.small);
+            setSmallIcon(rbMedium, R.drawable.medium);
+            setSmallIcon(rbLarge, R.drawable.large);
         } else if (selectedMenu.equals("Nasi Goreng")) {
             ivImage.setImageResource(R.drawable.nasgor);
             tvPrice.setText("Rp 25.000");
+            
+            setSmallIcon(rbSmall, R.drawable.small01);
+            setSmallIcon(rbMedium, R.drawable.medium02);
+            setSmallIcon(rbLarge, R.drawable.large03);
         } else {
             ivImage.setImageResource(R.drawable.kentang);
             tvPrice.setText("Rp 12.000");
+            
+            setSmallIcon(rbSmall, R.drawable.small01);
+            setSmallIcon(rbMedium, R.drawable.medium02);
+            setSmallIcon(rbLarge, R.drawable.large03);
         }
 
         RadioGroup rgSize = findViewById(R.id.rg_size);
@@ -59,6 +79,10 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         btnConfirm.setOnClickListener(v -> {
             int sizeId = rgSize.getCheckedRadioButtonId();
+            if (sizeId == -1) {
+                Toast.makeText(this, "Pilih ukuran terlebih dahulu", Toast.LENGTH_SHORT).show();
+                return;
+            }
             RadioButton rbSize = findViewById(sizeId);
             String size = rbSize.getText().toString();
 
@@ -73,7 +97,6 @@ public class DetailOrderActivity extends AppCompatActivity {
 
             String note = etNote.getText().toString();
 
-            // Sesuai permintaan: Langsung ke halaman pilih meja setelah konfirmasi
             Intent intent = new Intent(DetailOrderActivity.this, SelectTableActivity.class);
             intent.putExtra("MENU", selectedMenu);
             intent.putExtra("SIZE", size);
@@ -82,5 +105,13 @@ public class DetailOrderActivity extends AppCompatActivity {
             intent.putExtra("NOTE", note);
             startActivity(intent);
         });
+    }
+
+    private void setSmallIcon(RadioButton rb, int resId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        // Resize bitmap to a smaller size, e.g., 60x60 or 80x80 pixels
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
+        Drawable drawable = new BitmapDrawable(getResources(), resized);
+        rb.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     }
 }
