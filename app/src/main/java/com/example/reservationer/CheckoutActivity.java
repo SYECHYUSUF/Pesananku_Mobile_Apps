@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class CheckoutActivity extends AppCompatActivity {
 
     private String menu, sugar, addons, tableNo;
@@ -43,12 +47,15 @@ public class CheckoutActivity extends AppCompatActivity {
             RadioButton rbPayment = findViewById(selectedId);
             String paymentMethod = rbPayment.getText().toString();
 
-            // Tampilkan loading overlay
             flLoading.setVisibility(View.VISIBLE);
 
-            // Simulasi proses pembayaran (3 detik)
             new Handler().postDelayed(() -> {
                 flLoading.setVisibility(View.GONE);
+                
+                // Simpan ke riwayat
+                String currentDate = new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(new Date());
+                HistoryActivity.addHistory(menu, tableNo, currentDate);
+
                 Toast.makeText(this, "Pembayaran Berhasil via " + paymentMethod, Toast.LENGTH_LONG).show();
                 
                 Intent intent = new Intent(CheckoutActivity.this, ReceiptActivity.class);

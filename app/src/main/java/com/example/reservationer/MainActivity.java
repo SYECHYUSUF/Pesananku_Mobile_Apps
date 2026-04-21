@@ -68,7 +68,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.nav_history).setOnClickListener(v -> {
-            Toast.makeText(this, getString(R.string.history_coming_soon), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+        });
+
+        findViewById(R.id.nav_home).setOnClickListener(v -> {
+            // Already at home
         });
     }
 
