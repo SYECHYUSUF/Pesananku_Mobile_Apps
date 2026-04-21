@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.nav_history).setOnClickListener(v -> {
             Toast.makeText(this, getString(R.string.history_coming_soon), Toast.LENGTH_SHORT).show();
         });
+
+        findViewById(R.id.nav_home).setOnClickListener(v -> {
+            // Sudah di home
+        });
     }
 
     private void setupMenu() {
@@ -74,16 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 tableNo = result.getContents();
                 tvTableNumber.setText(getString(R.string.table_number_format, tableNo));
                 Toast.makeText(this, getString(R.string.table_detected, tableNo), Toast.LENGTH_SHORT).show();
-                
-                // Setelah scan, lanjut pilih menu (karena flow user: scan -> pilih menu -> bayar)
-                Toast.makeText(this, "Silakan pilih menu pesanan Anda", Toast.LENGTH_SHORT).show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    // Model Menu dengan Gambar
     static class MenuItem {
         String name, desc, price;
         int imageResId;
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Adapter dengan Layout Custom
     class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         List<MenuItem> items;
         MenuAdapter(List<MenuItem> items) { this.items = items; }
@@ -116,17 +115,11 @@ public class MainActivity extends AppCompatActivity {
             holder.ivImage.setImageResource(item.imageResId);
 
             holder.itemView.setOnClickListener(v -> {
-                // Flow user: pilih menu -> arahkan ke pilih meja (jika belum scan)
-                if (tableNo.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Silakan scan barcode meja terlebih dahulu!", Toast.LENGTH_SHORT).show();
-                    // Opsional: langsung buka scanner
-                    findViewById(R.id.btn_scan).performClick();
-                } else {
-                    Intent intent = new Intent(MainActivity.this, DetailOrderActivity.class);
-                    intent.putExtra("SELECTED_MENU", item.name);
-                    intent.putExtra("TABLE_NUMBER", tableNo);
-                    startActivity(intent);
-                }
+                // Langsung ke detail menu tanpa paksa scan
+                Intent intent = new Intent(MainActivity.this, DetailOrderActivity.class);
+                intent.putExtra("SELECTED_MENU", item.name);
+                intent.putExtra("TABLE_NUMBER", tableNo); // Kirim tableNo (mungkin masih kosong)
+                startActivity(intent);
             });
         }
 
