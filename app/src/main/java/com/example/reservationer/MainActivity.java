@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private String tableNo = "";
     private RecyclerView rvMenuHome;
     private TextView tvCartCount;
+    private CardView cvTableMap;
     private static int cartItemCount = 0;
 
     @Override
@@ -38,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
         tvTableNumber = findViewById(R.id.tv_table_number);
         rvMenuHome = findViewById(R.id.rv_menu_home);
         tvCartCount = findViewById(R.id.tv_cart_count);
+        cvTableMap = findViewById(R.id.cv_table_map);
         FloatingActionButton btnScan = findViewById(R.id.btn_scan);
 
         updateCartUI();
-
-        // Setup Menu List di Home
         setupMenu();
 
         btnScan.setOnClickListener(v -> {
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_cart).setOnClickListener(v -> {
             if (cartItemCount > 0) {
-                // Dummy: Langsung ke checkout seolah-olah isi keranjang
                 Toast.makeText(this, "Membuka Keranjang...", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Keranjang Anda kosong", Toast.LENGTH_SHORT).show();
@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateCartUI();
+        if (!tableNo.isEmpty()) {
+            cvTableMap.setVisibility(View.VISIBLE);
+        }
     }
 
     private void updateCartUI() {
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 tableNo = result.getContents();
                 tvTableNumber.setText(getString(R.string.table_number_format, tableNo));
+                cvTableMap.setVisibility(View.VISIBLE);
                 Toast.makeText(this, getString(R.string.table_detected, tableNo), Toast.LENGTH_SHORT).show();
             }
         } else {
