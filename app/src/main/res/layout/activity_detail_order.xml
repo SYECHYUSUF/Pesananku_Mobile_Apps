@@ -35,7 +35,7 @@
                     android:background="@drawable/bg_edittext"
                     android:backgroundTint="#80FFFFFF"
                     android:padding="8dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/backs"
                     app:tint="@color/primary_green" />
             </FrameLayout>
 

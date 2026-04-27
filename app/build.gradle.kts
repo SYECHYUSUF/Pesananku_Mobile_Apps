@@ -29,6 +29,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    @Suppress("UnstableApiUsage")
+    androidResources {
+        // The "!" prefix in ignoreAssetsPattern means "do NOT ignore".
+        // Removing "!.ds_store" ensures that .DS_Store files (covered by the ".*" pattern) are properly ignored.
+        ignoreAssetsPattern = "!.svn:!.git:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
 }
 
 dependencies {

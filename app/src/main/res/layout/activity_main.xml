@@ -136,6 +136,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -150,7 +151,8 @@
                         android:layout_height="180dp"
                         android:layout_marginTop="12dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/denah_meja" />
+                        android:src="@drawable/denah"
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -220,7 +222,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_today"
+                    android:src="@drawable/home"
                     app:tint="@color/primary_green" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -264,7 +266,7 @@
         android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera"
+        android:src="@drawable/barcode"
         app:backgroundTint="@color/accent_green"
         app:layout_anchor="@id/bottomAppBar"
         app:tint="@color/white"

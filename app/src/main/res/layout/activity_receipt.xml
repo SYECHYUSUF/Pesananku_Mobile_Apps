@@ -25,8 +25,9 @@
             <ImageView
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:src="@android:drawable/checkbox_on_background"
-                app:tint="@color/primary_green" />
+                android:src="@drawable/succes1"
+                android:background="@color/black"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,8 +53,8 @@
 
             <TextView
                 android:id="@+id/tv_receipt_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
                 android:lineSpacingExtra="10dp"
                 android:text="Memuat detail..."
                 android:textColor="@color/text_dark"
